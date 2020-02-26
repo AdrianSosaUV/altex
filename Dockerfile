@@ -11,4 +11,4 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing">> /etc/apk/reposito
 RUN cat /etc/apk/repositories
 
 RUN apk update && apk add texmf-dist ${scheme}
-RUN apk update && apk add texmaker
+RUN if [ "$scheme"="texlive" ]; then apk update && apk add texmaker ; else echo "${scheme} It's complete"; fi 
