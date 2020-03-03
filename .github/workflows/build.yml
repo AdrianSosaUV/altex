@@ -31,18 +31,12 @@ jobs:
       - name: Deploy
         run: |
           DOCKER_TAG="adrianosokax/$SCHEME"
-          GH_TAG="docker.pkg.github.com/adriansosauv/altex/$SCHEME"
           VERSION="$(date "+%Y%m%d")"
           docker tag $SCHEME ${DOCKER_TAG}:$VERSION
           docker tag $SCHEME ${DOCKER_TAG}:latest
-          docker tag $SCHEME ${GH_TAG}:$VERSION
-          docker tag $SCHEME ${GH_TAG}:latest
           docker images $DOCKER_TAG
           echo "$DOCKER_HUB_TOKEN" | docker login -u adrianosokax -p ${{ secrets.AlTex }}
-          echo "$GITHUB_TOKEN" | docker login --password-stdin -u AdrianSosaUV docker.pkg.github.com
           docker push $DOCKER_TAG
-          docker push $GH_TAG
         env:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: github.ref == 'refs/heads/master'
